@@ -1,0 +1,28 @@
+services:
+  app:
+    image: webdevops/php-apache:8.3
+    container_name: lampboard-tt
+    restart: unless-stopped
+    volumes:
+      - ./data/app:/app
+
+  db:
+    image: mariadb:11
+    container_name: lampboard-tt_db
+    restart: unless-stopped
+    volumes:
+      - ./data/db:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: tt
+      MYSQL_USER: tt
+      MYSQL_PASSWORD: tt
+
+  worker:
+    image: tigpt/cronjobs
+    container_name: lampboard-tt_worker
+    restart: unless-stopped
+    volumes:
+      - ./data/worker/cron.txt:/etc/crontabs/root:ro
+      - ./data/worker/script.sh:/script.sh:ro

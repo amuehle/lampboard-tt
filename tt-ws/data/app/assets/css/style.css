@@ -1,0 +1,207 @@
+/* --- GLOBAL --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    overflow-y: auto !important;
+}
+
+html {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* --- HEADER --- */
+.header {
+    text-align: center;
+    padding: 18px;
+    font-size: 34px;
+    font-weight: bold;
+    background: #222;
+    color: white;
+}
+
+.clock {
+    font-size: 22px;
+    margin-top: 6px;
+    color: #ddd;
+}
+
+/* --- LAMPBOARD GRID --- */
+.lampboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 18px;
+    justify-content: center;
+    overflow: visible !important;
+}
+
+/* --- TILE --- */
+.tile {
+    width: 260px;
+    height: 120px;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    text-align: center;
+    transition: transform 0.15s ease-in-out;
+}
+
+.tile:hover {
+    transform: scale(1.05);
+}
+
+/* --- STATUS COLORS --- */
+.in { background: #66ff66; }
+.out { background: #ff6666; }
+.none { background: #d9d9d9; }
+
+/* --- TILE TEXT --- */
+.tile .name {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.tile .info {
+    font-size: 18px;
+    margin-top: 8px;
+}
+
+/* --- MODAL --- */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    text-align: center;
+    width: 360px;
+    max-width: 90%;
+}
+
+/* --- BUTTONS --- */
+button {
+    width: 100%;
+    padding: 18px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-come { background: #28a745; color: white; }
+.btn-go { background: #dc3545; color: white; }
+.btn-cancel { background: #777; color: white; }
+
+/* --- ADMIN / FORMS FIX --- */
+.tab-content form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tab-content input[type="text"],
+.tab-content input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    display: block;
+}
+
+.tab-content button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal overflow */
+.tab-content {
+    overflow-x: hidden;
+}
+
+/* --- ADMIN TABS --- */
+.tab-container {
+    display:flex;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.tab {
+    flex:1;
+    padding:12px;
+    background:#eee;
+    cursor:pointer;
+    text-align:center;
+    font-size:16px;
+}
+
+.tab.active {
+    background:#ddd;
+    font-weight:bold;
+}
+
+.tab-content {
+    display:none;
+    margin-top:20px;
+    padding:10px;
+}
+
+.tab-content.active {
+    display:block;
+}
+
+/* --- TABLES --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* --- CONTAINERS --- */
+.export-box {
+    background:#fff;
+    padding:15px;
+    margin-bottom:10px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+#container, #main, #maincontainer {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+/* --- TOUCH SCROLLING --- */
+* {
+    -webkit-overflow-scrolling: touch;
+}
