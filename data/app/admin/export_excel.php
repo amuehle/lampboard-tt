@@ -3,8 +3,8 @@ require_once "../config/database.php";
 require_once "../includes/auth.php";
 require_once "../includes/lang.php";
 
-requireAdmin();
 $lang = loadLang();
+requireAdmin();
 
 require_once "../vendor/autoload.php";
 

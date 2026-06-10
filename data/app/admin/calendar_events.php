@@ -4,7 +4,6 @@ require_once "../includes/lang.php";
 
 $lang = loadLang();
 
-
 $employee_id = (int)($_GET['employee_id'] ?? 0);
 
 $stmt = $pdo->prepare("

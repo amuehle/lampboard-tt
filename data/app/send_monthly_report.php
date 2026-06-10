@@ -5,6 +5,7 @@ require_once "includes/lang.php";
 require_once "vendor/autoload.php";
 require_once "includes/auth.php";
 
+$lang = loadLang();
 requireAdmin();
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -12,7 +13,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$lang = loadLang();
 $mailConfig = require __DIR__ . "/config/mail.php";
 
 /* Fetch all employees */

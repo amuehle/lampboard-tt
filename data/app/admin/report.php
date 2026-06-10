@@ -4,7 +4,6 @@ require_once "../includes/auth.php";
 require_once "../includes/lang.php";
 
 $lang = loadLang();
-
 requireAdmin();
 
 $employee_id = $_GET['employee_id'] ?? 0;
