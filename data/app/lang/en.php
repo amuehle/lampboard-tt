@@ -60,9 +60,13 @@ return [
 "print_report" => "Print Report",
 
 /* EXCEL */
-"excel_export" => "Excel Export",
 "full_export" => "Full Export (.xlsx)",
 "current_month" => "Current Month",
+"complete_export" => "Complete Export",
+"export_from" => "From",
+"export_to" => "To",
+"export_complete_list" => "Export Complete List",
+"excel_export" => "Excel Export",
 
 /* REPORT PAGE */
 "reports" => "Reports",

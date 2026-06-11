@@ -132,11 +132,52 @@ $employees = $pdo->query("SELECT * FROM employees ORDER BY name")->fetchAll();
 
 <!-- EXCEL EXPORT -->
 <div class="tab-content" id="excel">
+
     <h3><?= $lang["excel_export"] ?? "Excel Export (PhpSpreadsheet)" ?></h3>
 
+    <!-- GESAMTEXPORT -->
+    <div class="export-box">
+
+        <h4>📊 <?= $lang["complete_export"] ?? "Complete Export" ?></h4>
+
+        <form action="/admin/export_excel_all.php" method="GET">
+
+            <div style="margin-bottom:10px;">
+                <label>
+                    <strong><?= $lang["export_from"] ?? "From" ?>:</strong>
+                </label>
+                <input
+                    type="date"
+                    name="from"
+                    value="<?= date('Y-m-01') ?>"
+                    style="width:100%;padding:10px;">
+            </div>
+
+            <div style="margin-bottom:10px;">
+                <label>
+                    <strong><?= $lang["export_to"] ?? "To" ?>:</strong>
+                </label>
+                <input
+                    type="date"
+                    name="to"
+                    value="<?= date('Y-m-d') ?>"
+                    style="width:100%;padding:10px;">
+            </div>
+
+            <button type="submit" class="btn-come" style="width:100%;">
+                📥 <?= $lang["export_complete_list"] ?? "Export Complete List" ?>
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- EINZELNE MITARBEITER -->
     <?php foreach ($employees as $e): ?>
         <div class="export-box">
-            <b><?= htmlspecialchars($e['name']) ?></b><br><br>
+
+            <b><?= htmlspecialchars($e['name']) ?></b>
+            <br><br>
 
             <a href="/admin/export_excel.php?employee_id=<?= $e['id'] ?>">
                 <button class="btn-come" style="width:100%;">
@@ -149,8 +190,10 @@ $employees = $pdo->query("SELECT * FROM employees ORDER BY name")->fetchAll();
                     📅 <?= $lang["current_month"] ?? "Current Month" ?>
                 </button>
             </a>
+
         </div>
     <?php endforeach; ?>
+
 </div>
 
 <!-- REPORT -->
