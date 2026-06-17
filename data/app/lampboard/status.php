@@ -8,6 +8,9 @@ if (isset($_GET['lang'])) {
 
 $lang = loadLang();
 
+/* today filter */
+$today = date('Y-m-d');
+
 $employees = $pdo->query("
 SELECT e.*,
 (
@@ -31,17 +34,23 @@ ORDER BY e.name
 foreach ($employees as $emp) {
 
     $status = $emp['last_action'] ?? null;
+    $lastTime = $emp['last_time'] ?? null;
+
+    if (!$lastTime || date('Y-m-d', strtotime($lastTime)) !== $today) {
+        $status = null;
+        $lastTime = null;
+    }
 
     if ($status === 'come') {
         $class = 'in';
-        $text = $emp['last_time']
-            ? date("d.m.Y H:i", strtotime($emp['last_time'])) . " " . ($lang["come"] ?? "COME")
+        $text = $lastTime
+            ? date("d.m.Y H:i", strtotime($lastTime)) . " " . ($lang["come"] ?? "COME")
             : ($lang["come"] ?? "COME");
 
     } elseif ($status === 'go') {
         $class = 'out';
-        $text = $emp['last_time']
-            ? date("d.m.Y H:i", strtotime($emp['last_time'])) . " " . ($lang["go"] ?? "GO")
+        $text = $lastTime
+            ? date("d.m.Y H:i", strtotime($lastTime)) . " " . ($lang["go"] ?? "GO")
             : ($lang["go"] ?? "GO");
 
     } else {

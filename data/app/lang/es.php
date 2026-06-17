@@ -12,7 +12,7 @@ return [
 "date" => "Fecha",
 "time" => "Hora",
 
-/* AUTH / SYSTEM */
+/* SYSTEM */
 "invalid_deployment_id" => "ID de despliegue inválido",
 
 /* DASHBOARD */
@@ -35,6 +35,11 @@ return [
 "manage_employees" => "Gestionar empleados",
 "open_employee_manager" => "Abrir gestor de empleados",
 "confirm_delete_employee" => "¿Eliminar empleado?",
+"rounding_enabled" => "Redondeo activo",
+"janitor_exception" => "Excepción de conserje",
+"time_rounding_rules" => "Reglas de redondeo",
+"rounded_time" => "Hora redondeada",
+"original_time" => "Hora original",
 
 /* ADMIN */
 "admin_panel" => "Panel de administración",

@@ -45,6 +45,9 @@ This application allows employees to register **COME / GO (check-in/check-out)**
 - Change admin password
 - Manage deployment access key (Lampboard protection)
 - Employee management (add / edit / delete)
+- Per-employee settings:
+  - Excel rounding enabled
+  - Janitor exception (special rule handling)
 - View last 200 time entries
 - Filter entries by employee
 - Calendar view of all time entries
@@ -68,8 +71,17 @@ This application allows employees to register **COME / GO (check-in/check-out)**
 
 - Export all time entries per employee
 - Export current month only
+- Export all employees in one file
 - Auto-formatted spreadsheets
 - Downloadable `.xlsx` files
+- Time rounding rules applied only in Excel exports:
+  - COME / GO rounding logic based on defined business rules
+  - Optional per-employee rounding activation
+  - Janitor exception handling
+  - Time snapping rules (09:00, 13:00, quarter-hour rounding)
+- ➕ Added summary row per employee:
+  - Total worked time in format `HH:MM`
+  - Calculated using rounded values
 
 ---
 

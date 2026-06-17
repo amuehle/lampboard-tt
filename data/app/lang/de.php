@@ -35,6 +35,11 @@ return [
 "manage_employees" => "Mitarbeiter verwalten",
 "open_employee_manager" => "Mitarbeiterverwaltung öffnen",
 "confirm_delete_employee" => "Mitarbeiter löschen?",
+"rounding_enabled" => "Rundung aktiv",
+"janitor_exception" => "Hausmeister Ausnahme",
+"time_rounding_rules" => "Zeitrundungsregeln",
+"rounded_time" => "Gerundete Zeit",
+"original_time" => "Originalzeit",
 
 /* ADMIN */
 "admin_panel" => "Admin Bereich",
@@ -74,7 +79,7 @@ return [
 
 /* MONTHLY REPORT MAIL */
 "monthly_report" => "Monatsbericht",
-"monthly_report_attached" => "Anbei der monatliche Anwesenheitsbericht für alle Mitarbeiter.",
+"monthly_report_attached" => "Anbei der monatliche Anwesenheitsbericht fuer alle Mitarbeiter.",
 "email_sent_success" => "Monatsbericht erfolgreich gesendet.",
 "email_error" => "Fehler beim Senden der E-Mail",
 

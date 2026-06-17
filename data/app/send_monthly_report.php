@@ -4,6 +4,7 @@ require_once "config/mail.php";
 require_once "includes/lang.php";
 require_once "vendor/autoload.php";
 require_once "includes/auth.php";
+require_once "includes/time_rounding.php";
 
 $lang = loadLang();
 requireAdmin();
@@ -28,12 +29,8 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
 /* TITLE */
-$sheet->setCellValue(
-    'A1',
-    ($lang["monthly_report"] ?? "Monthly Report") . ": " . $monthLabel
-);
+$sheet->setCellValue('A1', ($lang["monthly_report"] ?? "Monthly Report") . ": " . $monthLabel);
 $sheet->mergeCells('A1:D1');
-$sheet->getStyle('A1')->getFont()->setBold(true);
 
 /* HEADER */
 $sheet->setCellValue('A2', $lang["employees"] ?? "Employee");
@@ -46,6 +43,7 @@ $rowNum = 3;
 
 /* DATA */
 foreach ($employees as $e) {
+
     $stmt = $pdo->prepare("
         SELECT * FROM time_entries
         WHERE employee_id=? AND MONTH(entry_time)=? AND YEAR(entry_time)=?
@@ -54,20 +52,43 @@ foreach ($employees as $e) {
     $stmt->execute([$e['id'], $prevMonth, $prevYear]);
     $entries = $stmt->fetchAll();
 
+    $totalSeconds = 0;
+    $lastCome = null;
+
     foreach ($entries as $entry) {
-        $action = match ($entry['action']) {
+
+        $action = $entry['action'];
+
+        $label = match ($action) {
             'come' => $lang['come'] ?? 'COME',
             'go'   => $lang['go'] ?? 'GO',
-            default => strtoupper($entry['action'])
+            default => strtoupper($action)
         };
 
+        $rounded = applyTimeRules($entry['entry_time'], $action, $e);
+        $ts = strtotime($rounded);
+
+        if ($action === 'come') {
+            $lastCome = $ts;
+        } elseif ($action === 'go' && $lastCome) {
+            $totalSeconds += ($ts - $lastCome);
+            $lastCome = null;
+        }
+
         $sheet->setCellValue('A'.$rowNum, $e['name']);
-        $sheet->setCellValue('B'.$rowNum, date("Y-m-d", strtotime($entry['entry_time'])));
-        $sheet->setCellValue('C'.$rowNum, $action);
-        $sheet->setCellValue('D'.$rowNum, date("H:i", strtotime($entry['entry_time'])));
+        $sheet->setCellValue('B'.$rowNum, date("Y-m-d", $ts));
+        $sheet->setCellValue('C'.$rowNum, $label);
+        $sheet->setCellValue('D'.$rowNum, date("H:i", $ts));
 
         $rowNum++;
     }
+
+    // TOTAL ROW PER USER
+    $sheet->setCellValue('A'.$rowNum, $e['name']);
+    $sheet->setCellValue('B'.$rowNum, '');
+    $sheet->setCellValue('C'.$rowNum, $lang['total'] ?? 'Total');
+    $sheet->setCellValue('D'.$rowNum, gmdate('H:i', $totalSeconds));
+    $rowNum++;
 }
 
 /* AUTO SIZE */

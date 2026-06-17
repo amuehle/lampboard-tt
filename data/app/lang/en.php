@@ -12,7 +12,7 @@ return [
 "date" => "Date",
 "time" => "Time",
 
-/* AUTH / SYSTEM */
+/* SYSTEM */
 "invalid_deployment_id" => "Invalid deployment ID",
 
 /* DASHBOARD */
@@ -35,6 +35,11 @@ return [
 "manage_employees" => "Manage Employees",
 "open_employee_manager" => "Open Employee Manager",
 "confirm_delete_employee" => "Delete employee?",
+"rounding_enabled" => "Rounding enabled",
+"janitor_exception" => "Janitor exception",
+"time_rounding_rules" => "Time rounding rules",
+"rounded_time" => "Rounded time",
+"original_time" => "Original time",
 
 /* ADMIN */
 "admin_panel" => "Admin Panel",

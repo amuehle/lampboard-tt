@@ -172,7 +172,7 @@ $employees = $pdo->query("SELECT * FROM employees ORDER BY name")->fetchAll();
 
     </div>
 
-    <!-- EINZELNE MITARBEITER -->
+    <!-- EMPPLOYEE ENTRIES -->
     <?php foreach ($employees as $e): ?>
         <div class="export-box">
 

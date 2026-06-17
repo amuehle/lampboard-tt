@@ -12,7 +12,7 @@ return [
 "date" => "Date",
 "time" => "Heure",
 
-/* AUTH / SYSTEM */
+/* SYSTEM */
 "invalid_deployment_id" => "ID de déploiement invalide",
 
 /* DASHBOARD */
@@ -35,6 +35,11 @@ return [
 "manage_employees" => "Gérer les employés",
 "open_employee_manager" => "Ouvrir le gestionnaire d'employés",
 "confirm_delete_employee" => "Supprimer l employé ?",
+"rounding_enabled" => "Arrondi activé",
+"janitor_exception" => "Exception concierge",
+"time_rounding_rules" => "Règles d'arrondi",
+"rounded_time" => "Heure arrondie",
+"original_time" => "Heure originale",
 
 /* ADMIN */
 "admin_panel" => "Panneau d'administration",
