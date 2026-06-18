@@ -57,6 +57,7 @@ return [
 "select_employee" => "Seleccionar empleado",
 "full_calendar_view" => "Vista completa del calendario",
 "open_calendar" => "Abrir calendario",
+"delete_entry" => "Eliminar entrada?",
 
 /* REPORTS */
 "report" => "Informe",

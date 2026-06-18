@@ -90,6 +90,10 @@ $employees = $pdo->query("SELECT * FROM employees ORDER BY name")->fetchAll();
             <?= $lang["update"] ?? "Save" ?>
         </button>
 
+        <button class="btn-go" onclick="deleteEntry()">
+            <?= $lang["delete"] ?? "Delete" ?>
+        </button>
+
         <button class="btn-cancel" onclick="closeEdit()">
             <?= $lang["cancel"] ?? "Cancel" ?>
         </button>
@@ -141,6 +145,28 @@ function saveEdit() {
     fetch("/admin/update_entry.php", {
         method: "POST",
         headers: {"Content-Type":"application/x-www-form-urlencoded"},
+        body: data.toString()
+    })
+    .then(r => r.json())
+    .then(() => {
+        closeEdit();
+        loadEvents(empId);
+    });
+}
+
+function deleteEntry() {
+    if (!confirm("<?= $lang["delete_entry"] ?? "Delete entry?" ?>")) {
+        return;
+    }
+
+    const empId = document.getElementById("employee").value;
+
+    const data = new URLSearchParams();
+    data.append("id", selectedEventId);
+
+    fetch("/admin/delete_entry.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
         body: data.toString()
     })
     .then(r => r.json())
