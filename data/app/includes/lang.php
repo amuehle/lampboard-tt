@@ -2,7 +2,7 @@
 
 function loadLang() {
 
-    $supported = ['en', 'de', 'fr', 'es'];
+    $supported = ['en', 'de', 'fr', 'es', 'it'];
 
     if (isset($_GET['lang'])) {
         $urlLang = strtolower(trim($_GET['lang']));
