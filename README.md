@@ -34,7 +34,7 @@ This application allows employees to register **COME / GO (check-in/check-out)**
 - Live tile-based “Lampboard” terminal
 - One-click COME / GO time tracking
 - Real-time status updates (auto-refresh every 5s)
-- Multilingual interface (EN, DE, FR, ES)
+- Multilingual interface (EN, DE, FR, ES, IT)
 - Time-based status display (last action shown per employee)
 
 ---
