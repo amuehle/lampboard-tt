@@ -1,4 +1,5 @@
 <?php
+
 require_once "config/database.php";
 require_once "config/mail.php";
 require_once "includes/lang.php";
@@ -17,7 +18,10 @@ use PHPMailer\PHPMailer\Exception;
 $mailConfig = require __DIR__ . "/config/mail.php";
 
 /* Fetch all employees */
-$employees = $pdo->query("SELECT * FROM employees ORDER BY name")->fetchAll();
+$employees = $pdo->query("
+    SELECT * FROM employees
+    ORDER BY name
+")->fetchAll();
 
 /* Determine previous month */
 $prevMonth = date('m', strtotime('first day of last month'));
@@ -29,14 +33,33 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
 /* TITLE */
-$sheet->setCellValue('A1', ($lang["monthly_report"] ?? "Monthly Report") . ": " . $monthLabel);
+$sheet->setCellValue(
+    'A1',
+    ($lang["monthly_report"] ?? "Monthly Report") . ": " . $monthLabel
+);
 $sheet->mergeCells('A1:D1');
 
 /* HEADER */
-$sheet->setCellValue('A2', $lang["employees"] ?? "Employee");
-$sheet->setCellValue('B2', $lang["date"] ?? "Date");
-$sheet->setCellValue('C2', $lang["action"] ?? "Action");
-$sheet->setCellValue('D2', $lang["time"] ?? "Time");
+$sheet->setCellValue(
+    'A2',
+    $lang["employees"] ?? "Employee"
+);
+
+$sheet->setCellValue(
+    'B2',
+    $lang["date"] ?? "Date"
+);
+
+$sheet->setCellValue(
+    'C2',
+    $lang["action"] ?? "Action"
+);
+
+$sheet->setCellValue(
+    'D2',
+    $lang["time"] ?? "Time"
+);
+
 $sheet->getStyle('A2:D2')->getFont()->setBold(true);
 
 $rowNum = 3;
@@ -45,14 +68,23 @@ $rowNum = 3;
 foreach ($employees as $e) {
 
     $stmt = $pdo->prepare("
-        SELECT * FROM time_entries
-        WHERE employee_id=? AND MONTH(entry_time)=? AND YEAR(entry_time)=?
+        SELECT *
+        FROM time_entries
+        WHERE employee_id = ?
+          AND MONTH(entry_time) = ?
+          AND YEAR(entry_time) = ?
         ORDER BY entry_time
     ");
-    $stmt->execute([$e['id'], $prevMonth, $prevYear]);
+
+    $stmt->execute([
+        $e['id'],
+        $prevMonth,
+        $prevYear
+    ]);
+
     $entries = $stmt->fetchAll();
 
-    $totalSeconds = 0;
+    $roundedTotal = 0;
     $lastCome = null;
 
     foreach ($entries as $entry) {
@@ -65,29 +97,95 @@ foreach ($employees as $e) {
             default => strtoupper($action)
         };
 
-        $rounded = applyTimeRules($entry['entry_time'], $action, $e);
-        $ts = strtotime($rounded);
+        $rounded = applyTimeRules(
+            $entry['entry_time'],
+            $action,
+            $e
+        );
+
+        $time = new DateTime($entry['entry_time']);
 
         if ($action === 'come') {
-            $lastCome = $ts;
-        } elseif ($action === 'go' && $lastCome) {
-            $totalSeconds += ($ts - $lastCome);
+
+            $lastCome = new DateTime(
+                applyTimeRules(
+                    $time->format('Y-m-d H:i:s'),
+                    'come',
+                    $e
+                )
+            );
+        }
+
+        if ($action === 'go' && $lastCome) {
+
+            $go = new DateTime(
+                applyTimeRules(
+                    $time->format('Y-m-d H:i:s'),
+                    'go',
+                    $e
+                )
+            );
+
+            $diff = (
+                $go->getTimestamp()
+                - $lastCome->getTimestamp()
+            ) / 60;
+
+            if ($diff > 0) {
+                $roundedTotal += $diff;
+            }
+
             $lastCome = null;
         }
 
-        $sheet->setCellValue('A'.$rowNum, $e['name']);
-        $sheet->setCellValue('B'.$rowNum, date("Y-m-d", $ts));
-        $sheet->setCellValue('C'.$rowNum, $label);
-        $sheet->setCellValue('D'.$rowNum, date("H:i", $ts));
+        $ts = strtotime($rounded);
+
+        $sheet->setCellValue(
+            'A' . $rowNum,
+            $e['name']
+        );
+
+        $sheet->setCellValue(
+            'B' . $rowNum,
+            date("Y-m-d", $ts)
+        );
+
+        $sheet->setCellValue(
+            'C' . $rowNum,
+            $label
+        );
+
+        $sheet->setCellValue(
+            'D' . $rowNum,
+            date("H:i", $ts)
+        );
 
         $rowNum++;
     }
 
-    // TOTAL ROW PER USER
-    $sheet->setCellValue('A'.$rowNum, $e['name']);
-    $sheet->setCellValue('B'.$rowNum, '');
-    $sheet->setCellValue('C'.$rowNum, $lang['total'] ?? 'Total');
-    $sheet->setCellValue('D'.$rowNum, gmdate('H:i', $totalSeconds));
+    $h = floor($roundedTotal / 60);
+    $m = $roundedTotal % 60;
+
+    $sheet->setCellValue(
+        'A' . $rowNum,
+        $e['name']
+    );
+
+    $sheet->setCellValue(
+        'B' . $rowNum,
+        ''
+    );
+
+    $sheet->setCellValue(
+        'C' . $rowNum,
+        $lang['total'] ?? 'Total'
+    );
+
+    $sheet->setCellValue(
+        'D' . $rowNum,
+        sprintf('%02d:%02d', $h, $m)
+    );
+
     $rowNum++;
 }
 
@@ -97,7 +195,11 @@ foreach (range('A', 'D') as $col) {
 }
 
 /* SAVE FILE */
-$filename = sys_get_temp_dir() . "/monthly_report_" . date('Y_m', strtotime('first day of last month')) . ".xlsx";
+$filename = sys_get_temp_dir()
+    . "/monthly_report_"
+    . date('Y_m', strtotime('first day of last month'))
+    . ".xlsx";
+
 $writer = new Xlsx($spreadsheet);
 $writer->save($filename);
 
